@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>推理结果 · Audio2Face Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{"imports":{"three":"../node_modules/three/build/three.module.js","three/addons/":"../node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <nav class="topbar" aria-label="主导航"><a class="brand" href="../">a<span>2</span>f <b>AUDIO2FACE <small>LOCAL STUDIO</small></b></a><div><a href="../?asset=official-allison">人物回放</a><a href="../training/">训练工作台</a><a href="./" aria-current="page">推理结果</a></div><span class="local">● 本地工作空间</span></nav>
+  <main>
+    <header class="heading"><div><p class="eyebrow">INFERENCE COLLECTION / 2026.10.18</p><h1>让情绪，变成表情<span>。</span></h1><p>Claire 的五段语音表演。逐帧查看嘴形、眼神与情绪过渡。</p></div><div class="collection-stats"><div><b>05</b><span>推理片段</span></div><div><b>100<span>s</span></b><span>总时长</span></div><div><b>60</b><span>数据帧率 / fps</span></div></div></header>
+    <section id="clips" class="clip-list" aria-label="选择推理片段"></section>
+    <div class="workspace">
+      <section class="player-panel" aria-label="三维回放">
+        <div class="panel-head"><div><span class="live-dot"></span><b id="clip-title">载入推理结果</b><span class="badge">CLAIRE / V3</span></div><label class="compare"><input type="checkbox" id="compare"> 原视频对照</label></div>
+        <div class="stages" id="stages"><div class="stage" id="stage"><div id="viewport"></div><span class="stage-label">交互式 3D · 原始顶点动画</span><div class="stage-tools"><label>外观 <select id="appearance"><option value="skin">皮肤材质</option><option value="clay">素模</option><option value="wire">线框</option></select></label><button id="reset-view" title="恢复正面视角">正面视角</button></div><span class="orbit-hint">拖动旋转 · 滚轮缩放</span><div id="overlay" role="status">正在准备 Claire 头模…</div></div><div class="video-stage" id="video-stage" hidden><span class="stage-label">随包原视频 · 30 fps</span><video id="reference" muted playsinline preload="metadata" aria-label="随包原始预览视频"></video></div></div>
+        <div class="transport"><div class="seek-wrap"><canvas id="waveform" aria-hidden="true"></canvas><input id="seek" type="range" min="0" max="1200" step="1" value="0" aria-label="播放进度" disabled></div><div class="transport-row"><div class="play-buttons"><button id="play" class="primary" disabled>▶ 播放</button><button id="prev" title="上一帧" aria-label="上一帧" disabled>Ⅰ‹</button><button id="next" title="下一帧" aria-label="下一帧" disabled>›Ⅰ</button><output id="time">00:00.00 / 00:20.00</output></div><div class="play-options"><span id="frame">帧 1 / 1200</span><label>速度 <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></label><label><input id="loop" type="checkbox"> 循环</label><label><input id="mute" type="checkbox"> 静音</label></div></div><div class="status-row"><span id="status" role="status" aria-live="polite">读取数据清单…</span><span>皮肤 24,002 顶点 · 舌头 5,602 顶点</span></div></div>
+      </section>
+      <aside class="detail-panel"><div class="section-kicker">当前片段 <span id="clip-number">01 / 05</span></div><h2 id="detail-title">—</h2><div id="tags" class="tags"></div><h3>语音内容</h3><p id="transcript" class="transcript">载入中…</p><div class="detail-rule"></div><h3>数据说明</h3><dl><div><dt>身份</dt><dd>Claire · 官方 v3 网格</dd></div><div><dt>驱动</dt><dd>逐顶点位移 + 下颌 / 眼球</dd></div><div><dt>情绪条件</dt><dd>人工设置的时序曲线</dd></div><div><dt>输出</dt><dd>20 秒 · 1,200 帧 / 段</dd></div></dl><p class="note">这些情绪值是模型的输入条件，不是从语音识别出的情绪。五段使用不同语音，不能作为同音频的严格情绪对照。</p><details class="downloads"><summary>原始文件与渲染说明</summary><div id="downloads" class="download-links"></div><p>皮肤和舌头按 neutral + 原始位移回放，无嘴形缩放或平滑。皮肤贴图沿用本地 Claire 材质并适配 v3 UV；下牙由 5 个下颌点拟合刚体变换，眼球转轴采用网格中心近似。此处是浏览器预览。</p><a href="/demo-data/v3-20s-01-05/web/validation.json" target="_blank" rel="noopener">查看本地数据校验报告 ↗</a></details></aside>
+    </div>
+    <section class="analysis-panel"><div class="analysis-head"><div><p class="eyebrow">CONDITION & MOTION</p><h2>声音与情绪，在同一条时间线上</h2></div><div id="legend" class="legend"></div></div><div class="chart-layout"><div class="chart-box"><svg id="chart" viewBox="0 0 900 165" role="img" aria-label="人工输入情绪随时间变化曲线"></svg><div class="chart-footer"><span>输入情绪强度 · 0–1</span><span>播放时跟随当前帧</span></div></div><div class="metrics"><div><span>皮肤位移 RMS</span><b id="skin-rms">—</b><small>cm</small></div><div><span>舌头位移 RMS</span><b id="tongue-rms">—</b><small>cm</small></div><div><span>下颌锚点 0 · Y 位移</span><b id="jaw-dy">—</b><small>cm</small></div></div></div></section>
+    <footer><span>NVIDIA Audio2Face-3D v3.0 · Claire</span><span>01–05 / 本包实际包含 5 段 · float32 原始结果</span></footer>
+  </main><audio id="audio" preload="auto"></audio><script type="module" src="app.js"></script>
+</body></html>

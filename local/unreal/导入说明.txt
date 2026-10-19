@@ -1,0 +1,36 @@
+当前数据包：metahuman_emotions_56s.zip，位于 ../demo-data/emotions-56s；当前脚本使用此目录。1,680 帧 / 30 fps，音频 55.952 秒，序列范围 0–1680。
+
+状态：导入准备，尚未完成真实 MetaHuman 头模回放
+
+本目录内容
+• A2FMetaHuman/A2FMetaHuman.uproject：独立 UE 5.7 工程模板，启用了 MetaHuman Creator、Control Rig、Python 和 Sequencer 脚本插件；没有角色资产和动画结果。
+• import_selected_metahuman.py：在编辑器中选中已装配的 MetaHuman 后执行，创建新的 Level Sequence，将 face.fbx 导入 Face Control Rig，并加入 audio.wav。
+• probe_assets.py：只读资源探测脚本。
+• environment_status.json：这次核查的事实与未完成事项。
+
+本机核查
+已发现 Unreal Engine 5.7.4 和 UE_5.8；5.7 中已经安装 MetaHuman Core/Optional 资源、Ada 等预设、Face Control Rig。
+Documents/Codex 中没有找到现成 MetaHuman 工程。引擎提供的 SKM_Face 是模板，包含“No DNA Attached”标记，不能视为已装配可表演角色。
+本次启动 UE 5.7 commandlet 后超过六分钟仍没有日志输出或探测结果，已终止该进程。没有运行或验证导入脚本的 Unreal API。当前系统 xcode-select 指向 CommandLineTools，未在 /Applications 发现 Xcode，但尚未证明这是启动阻塞原因。
+
+有可用角色后的最短操作
+1. 打开本目录的 .uproject，在 UE 中创建/导入并完成装配一个 MetaHuman；也可以在已有 MetaHuman 工程启用 Python Editor Script Plugin、Sequencer Scripting、Control Rig 后重启。
+2. 将已装配角色放入关卡并保存关卡。在 World Outliner 仅选中该角色。
+3. 选择 Tools → Execute Python Script，运行本目录 import_selected_metahuman.py。脚本使用与它同级目录的 ../demo-data/emotions-56s，无需改绝对路径。
+4. 脚本创建 /Game/A2FDemo/A2F_Playback（重名则自动追加编号），30 fps，第 0–1679 帧动画；播放范围结束值 1680；音频从第 0 帧开始。
+5. 查看新生成的 last_import_report.json。曲线回读比较通过不等同于视觉通过：仍需播放 Sequencer 并检查嘴唇、牙齿、舌头和左右控制方向。如果 status=failed / imported_needs_curve_review，保留报告和 UE Output Log 以便继续调整。
+6. 保存包含角色的关卡。脚本只保存新序列及新音频资产，不自动改存已有关卡。
+
+脚本使用 UE 自带 MetaHuman Controls Mapping 预设；不需要 NVIDIA ACE Unreal 插件，因为这次是离线动画回放。
+不能将 face.fbx 当作角色网格或普通骨骼动画导入。ZIP 中没有角色头模、材质或 DNA；最小缺少项是一个已经装配并可在 UE 播放的 MetaHuman。
+
+手动导入备用路径
+创建 Level Sequence，设置 30 fps，加入 MetaHuman 角色；在 Face / Face_ControlBoard_CtrlRig 轨道选择 Import Control Rig FBX，使用 MetaHuman Controls Mapping，导入 face.fbx 全部控制器；添加 audio.wav 到音频轨道，第 0 帧开始，播放范围 0–1680。
+
+官方参考
+Epic Control Rig Python 与 FBX 导入：
+https://dev.epicgames.com/documentation/en-us/unreal-engine/python-scripting-for-animating-with-control-rig-in-unreal-engine
+Epic MetaHuman 硬件及平台要求：
+https://dev.epicgames.com/documentation/en-us/metahuman/metahuman-hardware-requirements-in-unreal-engine
+NVIDIA ACE 插件支持矩阵（Windows/Linux；这里无需安装）：
+https://docs.nvidia.com/ace/ace-unreal-plugin/2.5/ace-unreal-plugin-support-matrix.html

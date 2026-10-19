@@ -1,0 +1,1 @@
+{"name":"audio2face-studio","version":"1.0.0","private":true,"type":"module","scripts":{"test":"node tools/verify_site.mjs","serve":"python3 tools/serve_site.py"}}

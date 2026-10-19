@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio2Face · 离线回放</title>
+  <link rel="stylesheet" href="style.css?v=realistic-3">
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<main>
+  <nav class="studio-nav" aria-label="工作区"><a href="./?asset=official-allison" aria-current="page">人物回放</a><a href="training/">训练工作台 ↗</a><a href="inference/">推理结果 ↗</a></nav>
+  <header><div><p class="eyebrow">NVIDIA AUDIO2FACE-3D / LOCAL PLAYBACK</p><h1>让声音，回到表情里。</h1><p class="intro">播放服务器生成的动画，检查音画同步与面部控制曲线。</p></div><span class="pill">离线数据 · 本机回放</span></header>
+  <div id="error" role="alert" hidden></div>
+  <div class="workspace">
+    <section class="viewport-panel" aria-label="3D面部预览">
+      <div class="viewport-title"><label class="model-picker"><span class="sr-label">头模</span><select id="model-select" aria-label="头模"><option value="allison-official" selected>Allison · 写实女性</option><option value="james-official">James · 写实男性适配</option><option value="mark-official">Mark · 写实男性适配</option><option value="debra-official">Debra · 官方角色适配</option><option value="claire-official">Claire · 官方完整资产</option><option value="realistic">写实女性 · 柔和妆容</option><option value="cartoon">3D 卡通 · 绿眸女生</option><option value="anime">二次元 · 紫眸女生</option><option value="textured">原版 · 通用皮肤</option><option value="claire">Claire · 原始参考头模</option></select></label><span id="mesh-status">载入中</span></div>
+      <div id="viewport"><p id="mesh-message">正在载入官方参考头模…</p></div>
+      <div class="viewport-footer"><span>拖动旋转 · 滚轮缩放</span><label id="debra-hair-control" hidden><input id="debra-hair" type="checkbox" checked> 短卷发</label><label><input id="wireframe" type="checkbox"> 线框</label><button id="compare-model" type="button" hidden>切换至 Claire</button><button id="reset-camera" type="button">正面视角</button></div>
+      <p class="model-note" id="model-note">正在载入带纹理的人脸模型…</p>
+    </section>
+    <section class="inspector">
+      <div class="stats"><div><span>动画帧</span><strong id="frame-count">—</strong></div><div><span>音频长度</span><strong id="audio-duration">—</strong></div></div>
+      <div class="section-label"><h2>表情曲线</h2><span id="current-value" class="number">0.0000</span></div>
+      <div class="selectors"><label>数据集<select id="dataset"><option value="blendshapes">68 路 Blendshape</option><option value="controls">173 路 MetaHuman 控制器</option></select></label><label>通道<select id="channel" aria-label="通道"></select></label></div>
+      <canvas id="curve" aria-label="选中通道在整段动画中的数值曲线"></canvas>
+      <div class="section-label"><h2>当前帧 · 主要表情</h2><span id="frame-label">Frame 000</span></div>
+      <div id="meters"></div>
+      <p class="small-note" id="motion-note">驱动来源：blendshapes.csv；按原始权重回放，帧间线性插值。</p>
+    </section>
+  </div>
+  <section class="transport" aria-label="播放控制">
+    <div id="emotion-segments" class="emotion-segments" aria-label="情绪段落"></div>
+    <div class="transport-top"><button id="play" class="primary" type="button">播放音频与动画</button><button id="prev" type="button" aria-label="上一帧">上一帧</button><button id="next" type="button" aria-label="下一帧">下一帧</button><span id="time-label" class="number">0.000 / 4.000 s</span><label class="rate">速度<select id="rate"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></label><label><input id="loop" type="checkbox"> 循环</label></div>
+    <canvas id="waveform" aria-label="音频波形及当前播放位置"></canvas>
+    <label class="timeline-label" for="timeline">时间位置 <span id="timeline-end">—</span></label><input id="timeline" type="range" min="0" max="0" step="0.001" value="0">
+    <audio id="audio" preload="auto"></audio>
+  </section>
+  <footer><span id="source-label">正在读取数据来源…</span><a id="fbx-download" download>下载 MetaHuman 控制动画 FBX ↗</a><a id="audio-download" download>音频 WAV ↗</a></footer>
+</main>
+<script type="module" src="app.js?v=bugfix-1"></script>
+</body></html>
