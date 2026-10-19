@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create reviewable upload files for the first GitHub web upload."""
+"""Create reproducible asset parts and an optional source backup."""
 from pathlib import Path
 import gzip
 import hashlib
